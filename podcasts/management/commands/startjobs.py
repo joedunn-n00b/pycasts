@@ -10,7 +10,7 @@ def save_new_episodes(feed):
     podcast_title = feed.channel.title
     podcast_image = feed.channel.image['href']
 
-    for item in feed.entries():
+    for item in feed.entries:
         if not Episode.objects.filter(guid=item.guid).exists():
             episode = Episode(
                 title = item.title,
@@ -22,6 +22,7 @@ def save_new_episodes(feed):
                 guid = item.guid,
             )
             episode.save()
+
 def fetch_realpython_episodes():
     _feed = fp.parse('https://realpython.com/podcasts/rpp/feed')
     save_new_episodes(_feed)
