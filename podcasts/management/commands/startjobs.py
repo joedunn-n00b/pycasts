@@ -11,7 +11,7 @@ def save_new_episodes(feed):
     podcast_image = feed.channel.image['href']
 
     for item in feed.entries():
-        if not Episode.objects.filter(guid=item.guid).exists()
+        if not Episode.objects.filter(guid=item.guid).exists():
             episode = Episode(
                 title = item.title,
                 description = item.description,
