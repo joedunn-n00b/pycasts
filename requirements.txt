@@ -1,3 +1,4 @@
 Django==3.2.9
 feedparser==6.0.2
 django-apscheduler==0.4.1
+python-dateutil==2.8.2

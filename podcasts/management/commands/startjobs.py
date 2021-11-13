@@ -1,7 +1,25 @@
-# you’re going to be adding jobs to this file with django-apscheduler,
-# which is why you named the file startjobs.py.
 from django.core.management.base import BaseCommand
+
+import feedparser as fp
+from dateutil.parser import parse
+
+from podcasts.models import Episode
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        print("It works!")
+        feed = fp.parse('https://realpython.com/podcasts/rpp/feed')
+        podcast_title = feed.channel.title
+        podcast_image = feed.channel.image['href']
+
+        for item in feed.entries:
+            if not Episode.objects.filter(guid=item.guid).exists():
+                episode = Episode(
+                    title = item.title,
+                    description = item.description,
+                    pub_date = parse(item.published),
+                    link = item.link,
+                    image = podcast_image,
+                    podcast_name = podcast_title,
+                    guid = item.guid,
+                )
+                episode.save()
